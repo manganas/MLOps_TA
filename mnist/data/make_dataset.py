@@ -58,14 +58,15 @@ class CorruptMnist(Dataset):
         except:
             raise ValueError("No preprocessed files found")
 
+    
     def preprocess_data(self) -> None:
         if not Path(self.out_folder).exists():
             print("Creating preprocessed data folder...")
             Path(self.out_folder).mkdir(parents=True, exist_ok=True)
 
+        
         transf = transforms.Compose(
             [
-                transforms.ToTensor(),
                 transforms.Normalize((0.0,), (1.0,)),
             ]
         )
@@ -75,12 +76,10 @@ class CorruptMnist(Dataset):
             targets = []
 
             for i in range(9):
+                img = torch.load(f"{self.in_folder}/train_images_{i}.pt")
                 images.append(
-                    torch.load(f"{self.in_folder}/train_images_{i}.pt").unsqueeze(0)
-                )
-
-                if i == 0:
-                    img_shape = images[0].shape
+                    transf(img)
+                )               
 
                 targets.append(torch.load(f"{self.in_folder}/train_target_{i}.pt"))
 
@@ -88,14 +87,29 @@ class CorruptMnist(Dataset):
 
             targets = torch.concat(targets, dim=0)
 
+            torch.save(images.unsqueeze(1), f"{self.out_folder}/train_images.pt")
+            torch.save(targets, f"{self.out_folder}/train_targets.pt")
+
         else:
-            images = torch.load(f"{self.in_folder}/test_images.pt").unsqueeze(0)
-            targets = torch.load(f"{self.in_folder}/test_target.pt")
 
-        print(images.shape)
+            test_images_file_path = Path(self.out_folder) / "test_images.pt"
+            if test_images_file_path.exists():
+                print(f"{test_images_file_path} already exists, skipping preprocessing")
+            else:
+                images = transf(torch.load(f"{self.in_folder}/test_images.pt"))
+                torch.save(images.unsqueeze(1), f"{self.out_folder}/test_images.pt")
+            
+            
+            test_targets_file_path = Path(self.out_folder) / "test_targets.pt"
+            if test_targets_file_path.exists():
+                print(f"{test_targets_file_path} already exists, skipping preprocessing")
+            else:
+                targets = torch.load(f"{self.in_folder}/test_target.pt")
+                torch.save(targets, f"{self.out_folder}/test_targets.pt")
 
-        # self.data = data
-        # self.targets = targets
+
+
+
 
     def download_data(self) -> None:
         if not Path(self.in_folder).exists():
@@ -174,6 +188,7 @@ def main(input_filepath: str, output_filepath: str) -> None:
         train=True, in_folder=input_filepath, out_folder=output_filepath
     )
     train.download_data()
+    print("Train data downloaded")
     train.preprocess_data()
 
     test = CorruptMnist(
@@ -181,8 +196,23 @@ def main(input_filepath: str, output_filepath: str) -> None:
     )
 
     test.download_data()
+    print("Test data downloaded")
     test.preprocess_data()
 
+    # load saved files to print dimensions
+    
+    train_images_tensor = torch.load(f"{output_filepath}/train_images.pt")
+    train_targets_tensor = torch.load(f"{output_filepath}/train_targets.pt")
+
+    print(f"Train images shape: {train_images_tensor.shape}")
+    print(f"Train targets shape: {train_targets_tensor.shape}")
+
+    test_images_tensor = torch.load(f"{output_filepath}/test_images.pt")
+    test_targets_tensor = torch.load(f"{output_filepath}/test_targets.pt")
+    print(f"Test images shape: {test_images_tensor.shape}")
+    print(f"Test targets shape: {test_targets_tensor.shape}")
+
+    
     # print(train.data.shape)
     # print(train.targets.shape)
     # print(test.data.shape)
