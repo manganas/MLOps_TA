@@ -25,3 +25,10 @@ dev = {file = ['requirements_dev.txt']}
 
 [tool.ruff]
 line-length = 120
+indent-width = 4
+
+select = ["I"]
+
+[tool.ruff.format]
+# Like Black, indent with spaces, rather than tabs.
+indent-style = "space"
