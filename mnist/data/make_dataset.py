@@ -15,50 +15,52 @@ from torchvision import transforms
 
 
 class CorruptMnist(Dataset):
-    def __init__(self, train: bool, in_folder: str = "", out_folder: str = "") -> None:
+    def __init__(
+        self, train: bool, in_folder: str = "", out_folder: str = "", transf=None
+    ) -> None:
         super().__init__()
 
         self.train = train
         self.in_folder = in_folder
         self.out_folder = out_folder
 
-        return
+        self.transf = transf
+        if not transf:
+            self.transf = transforms.Compose(
+                [
+                    transforms.Normalize((0.0,), (1.0,)),
+                ]
+            )
 
         if self.train:
-            content = []
-            for i in range(8):
-                content.append(
-                    torch.load(f"{in_folder}/train_{i}.pt", allow_pickle=True)
-                )
-            data = torch.tensor(np.concatenate([c["images"] for c in content])).reshape(
-                -1, 1, 28, 28
-            )
-            targets = torch.tensor(np.concatenate([c["labels"] for c in content]))
-        else:
-            content = np.load(f"{in_folder}/test.npz", allow_pickle=True)
-            data = torch.tensor(content["images"]).reshape(-1, 1, 28, 28)
-            targets = torch.tensor(content["labels"])
+            try:  # Train dataset
+                self.data = torch.load(f"{self.out_folder}/train_images.pt")
+                self.targets = torch.load(f"{self.out_folder}/train_targets.pt")
+            except FileNotFoundError:
+                self.download_data()
+                self.preprocess_data()
+                self.data = torch.load(f"{self.out_folder}/train_images.pt")
+                self.targets = torch.load(f"{self.out_folder}/train_targets.pt")
+        else:  # Test dataset
+            try:
+                self.data = torch.load(f"{self.out_folder}/test_images.pt")
+                self.targets = torch.load(f"{self.out_folder}/test_targets.pt")
+            except FileNotFoundError:
+                self.download_data()
+                self.preprocess_data()
+                self.data = torch.load(f"{self.out_folder}/test_images.pt")
+                self.targets = torch.load(f"{self.out_folder}/test_targets.pt")
 
-        self.data = data
-        self.targets = targets
+    def __getitem__(self, idx: int) -> Tuple[Tensor, Tensor]:
+        return self.data[idx].float(), self.targets[idx]
 
-        if self.out_folder:
-            self.save_preprocessed()
-
-    def save_preprocessed(self) -> None:
-        split = "train" if self.train else "test"
-        torch.save([self.data, self.targets], f"{self.out_folder}/{split}_processed.pt")
-
-    def load_preprocessed(self) -> None:
-        split = "train" if self.train else "test"
-        try:
-            self.data, self.targets = torch.load(
-                f"{self.out_folder}/{split}_processed.pt"
-            )
-        except:
-            raise ValueError("No preprocessed files found")
+    def __len__(self) -> int:
+        return self.targets.numel()
 
     def preprocess_data(self) -> None:
+        """
+        Preprocesses the data and saves it to the out_folder
+        """
         if not Path(self.out_folder).exists():
             print("Creating preprocessed data folder...")
             Path(self.out_folder).mkdir(parents=True, exist_ok=True)
@@ -104,6 +106,9 @@ class CorruptMnist(Dataset):
                 torch.save(targets, f"{self.out_folder}/test_targets.pt")
 
     def download_data(self) -> None:
+        """
+        Downloads the data from github if it does not already exist in the raw data folder
+        """
         if not Path(self.in_folder).exists():
             print("Creating raw data folder...")
             Path(self.in_folder).mkdir(parents=True, exist_ok=True)
@@ -158,12 +163,6 @@ class CorruptMnist(Dataset):
                     "https://raw.githubusercontent.com/SkafteNicki/dtu_mlops/main/data/corruptmnist/test_target.pt"
                 )
                 shutil.move("test_target.pt", f"{self.in_folder}/test_target.pt")
-
-    def __len__(self) -> int:
-        return self.targets.numel()
-
-    def __getitem__(self, idx: int) -> Tuple[Tensor, Tensor]:
-        return self.data[idx].float(), self.targets[idx]
 
 
 @click.command()
