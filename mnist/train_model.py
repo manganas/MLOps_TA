@@ -6,6 +6,7 @@ from mnist.models.model import SimpleCNN
 from mnist.data.make_dataset import CorruptMnist
 
 from tqdm import tqdm
+from pathlib import Path
 
 
 def set_seed(seed: int) -> None:
@@ -25,6 +26,9 @@ def main():
     # paths
     in_folder = "data/raw"
     out_folder = "data/processed"
+    save_model_path = "models"
+
+    Path(save_model_path).mkdir(parents=True, exist_ok=True)
 
     # training params
     batch_size = 32
@@ -108,6 +112,8 @@ def main():
         print(
             f"Epoch {epoch+1}/{epochs} - train_loss: {train_loss:.4f} - train_acc: {train_acc:.4f} - val_loss: {val_loss:.4f} - val_acc: {val_acc:.4f}"
         )
+
+    torch.save(model.state_dict(), save_model_path + "/model.pt")
 
 
 if __name__ == "__main__":
