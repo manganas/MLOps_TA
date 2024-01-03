@@ -43,6 +43,10 @@ clean:
 data: requirements
 	$(PYTHON_INTERPRETER) mnist/data/make_dataset.py
 
+# Train model
+.PHONY: train
+train: data
+	$(PYTHON_INTERPRETER) mnist/train_model.py
 #################################################################################
 # Documentation RULES                                                           #
 #################################################################################
