@@ -8,6 +8,11 @@ from mnist.data.make_dataset import CorruptMnist
 from tqdm import tqdm
 from pathlib import Path
 
+from omegaconf import DictConfig, OmegaConf
+import hydra
+
+import logging
+
 
 def set_seed(seed: int) -> None:
     """Set seed for reproducibility."""
@@ -16,26 +21,28 @@ def set_seed(seed: int) -> None:
     torch.cuda.manual_seed_all(seed)
 
 
-def main():
-    ## Hparams
+@hydra.main(config_path="conf", config_name="config", version_base=None)
+def main(config: DictConfig) -> None:
+    print(f"configuration: \n {OmegaConf.to_yaml(config)}")
 
-    # misc
-    seed = 42
+    ## Hparams
+    seed = config.seed
     set_seed(seed)
 
     # paths
-    in_folder = "data/raw"
-    out_folder = "data/processed"
-    save_model_path = "models"
+    data_folder = Path(config.data_path)
+    in_folder = data_folder / "raw"
+    out_folder = data_folder / "processed"
 
+    save_model_path = config.model_path
     Path(save_model_path).mkdir(parents=True, exist_ok=True)
 
     # training params
-    batch_size = 32
-    epochs = 10
-    lr = 0.001
-    img_size = 28
-    num_classes = 10
+    batch_size = config.experiment.batch_size
+    epochs = config.experiment.num_epochs
+    lr = config.experiment.lr
+    img_size = config.experiment.img_size
+    num_classes = config.experiment.num_classes
 
     # Device
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")

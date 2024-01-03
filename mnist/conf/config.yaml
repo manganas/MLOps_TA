@@ -1,0 +1,8 @@
+seed: 1
+model_path: './models'
+data_path: './data'
+log_path: './logs'
+
+
+defaults:
+    - experiment: experiment1
