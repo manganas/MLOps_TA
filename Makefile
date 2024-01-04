@@ -47,6 +47,18 @@ data: requirements
 .PHONY: train
 train: data
 	$(PYTHON_INTERPRETER) mnist/train_model.py
+
+
+
+
+########################
+# Docker
+########################
+.PHONY docker_trainer
+docker_trainer:
+	docker build -f dockerfiles/trainer.dockerfile . -t trainer
+
+
 #################################################################################
 # Documentation RULES                                                           #
 #################################################################################
