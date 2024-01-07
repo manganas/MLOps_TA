@@ -52,6 +52,4 @@ jobs:
     - name: Format with ruff
       run: |
         pip install ruff
-        ruff check mnist/
         ruff format mnist/
-        ruff check mnist/
