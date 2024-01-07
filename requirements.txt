@@ -10,4 +10,3 @@ torch
 torchvision
 tqdm==4.66.1
 wget==3.2
-
