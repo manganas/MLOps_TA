@@ -25,9 +25,7 @@ def main(cfg: DictConfig) -> None:
     model = SimpleCNN(img_size=img_size, out_features=num_classes)
 
     # Callbacks
-    checkpoint_callback = ModelCheckpoint(
-        dirpath="./models", monitor="val_loss", mode="min"
-    )
+    checkpoint_callback = ModelCheckpoint(dirpath="./models", monitor="", mode="min")
 
     early_stopping_callback = EarlyStopping(
         monitor="val_loss", patience=3, verbose=True, mode="min"
