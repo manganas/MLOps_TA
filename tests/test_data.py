@@ -1,14 +1,25 @@
 from tests import _PATH_DATA, _PROJECT_ROOT, _TEST_ROOT
 from mnist.data.make_dataset import CorruptMnist
 
+import pytest
+import os
 
-def test_data():
+
+@pytest.fixture
+def get_datasets():
     train_dataset = CorruptMnist(
         True, in_folder="data/raw", out_folder="data/processed"
     )
     test_dataset = CorruptMnist(
         False, in_folder="data/raw", out_folder="data/processed"
     )
+
+    return train_dataset, test_dataset
+
+
+@pytest.mark.skipif(not os.path.exists(_PATH_DATA), reason="Data files not found")
+def test_data(get_datasets):
+    train_dataset, test_dataset = get_datasets
 
     assert (
         len(train_dataset) == 45000
