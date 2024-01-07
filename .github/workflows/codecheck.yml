@@ -1,4 +1,4 @@
-name: "Run tests cached"
+name: "Run codechecks"
 
 on:
   push:
