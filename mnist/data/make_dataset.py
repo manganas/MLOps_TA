@@ -15,9 +15,7 @@ from torchvision import transforms
 
 
 class CorruptMnist(Dataset):
-    def __init__(
-        self, train: bool, in_folder: str = "", out_folder: str = "", transf=None
-    ) -> None:
+    def __init__(self, train: bool, in_folder: str = "", out_folder: str = "", transf=None) -> None:
         super().__init__()
 
         self.train = train
@@ -98,9 +96,7 @@ class CorruptMnist(Dataset):
 
             test_targets_file_path = Path(self.out_folder) / "test_targets.pt"
             if test_targets_file_path.exists():
-                print(
-                    f"{test_targets_file_path} already exists, skipping preprocessing"
-                )
+                print(f"{test_targets_file_path} already exists, skipping preprocessing")
             else:
                 targets = torch.load(f"{self.in_folder}/test_target.pt")
                 torch.save(targets, f"{self.out_folder}/test_targets.pt")
@@ -175,17 +171,13 @@ def main(input_filepath: str, output_filepath: str) -> None:
     logger = logging.getLogger(__name__)
     logger.info("making final data set from raw data")
 
-    train = CorruptMnist(
-        train=True, in_folder=input_filepath, out_folder=output_filepath
-    )
+    train = CorruptMnist(train=True, in_folder=input_filepath, out_folder=output_filepath)
     train.download_data()
     print("Train data downloaded")
     train.preprocess_data()
     print("Train data processed\n")
 
-    test = CorruptMnist(
-        train=False, in_folder=input_filepath, out_folder=output_filepath
-    )
+    test = CorruptMnist(train=False, in_folder=input_filepath, out_folder=output_filepath)
 
     test.download_data()
     print("Test data downloaded")

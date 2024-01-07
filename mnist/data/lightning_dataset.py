@@ -16,27 +16,19 @@ class CorruptMnistLightningModule(LightningDataModule):
     def setup(self, stage: str) -> None:
         # Assign train/val datasets for use in dataloaders
         if stage == "fit":
-            mnist_full = CorruptMnist(
-                train=True, out_folder=self.data_dir, in_folder="data/raw"
-            )
+            mnist_full = CorruptMnist(train=True, out_folder=self.data_dir, in_folder="data/raw")
 
             # split mnist_full dataset
             train_size = int(0.8 * len(mnist_full))
             test_size = len(mnist_full) - train_size
-            self.mnist_train, self.mnist_val = torch.utils.data.random_split(
-                mnist_full, [train_size, test_size]
-            )
+            self.mnist_train, self.mnist_val = torch.utils.data.random_split(mnist_full, [train_size, test_size])
 
         # Assign test dataset for use in dataloader(s)
         if stage == "test":
-            self.mnist_test = CorruptMnist(
-                train=False, out_folder=self.data_dir, in_folder="data/raw"
-            )
+            self.mnist_test = CorruptMnist(train=False, out_folder=self.data_dir, in_folder="data/raw")
 
         if stage == "predict":
-            self.mnist_test = CorruptMnist(
-                train=False, out_folder=self.data_dir, in_folder="data/raw"
-            )
+            self.mnist_test = CorruptMnist(train=False, out_folder=self.data_dir, in_folder="data/raw")
 
     def train_dataloader(self) -> DataLoader:
         return DataLoader(self.mnist_train, batch_size=self.batch_size, shuffle=True)

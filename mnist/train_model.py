@@ -54,9 +54,7 @@ def main(config: DictConfig) -> None:
     # split training dataset into train and validation
     train_size = int(0.8 * len(train_dataset))
     val_size = len(train_dataset) - train_size
-    train_dataset, val_dataset = torch.utils.data.random_split(
-        train_dataset, [train_size, val_size]
-    )
+    train_dataset, val_dataset = torch.utils.data.random_split(train_dataset, [train_size, val_size])
 
     # Dataloaders
     train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
