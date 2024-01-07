@@ -47,10 +47,10 @@ jobs:
 
 
     - name: Get data
-    - uses: iterative/setup-dvc@v1
-        run: dvc pull
-        env:
-            GDRIVE_CREDENTIALS_DATA: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
+      uses: iterative/setup-dvc@v1
+      run: dvc pull
+      env:
+          GDRIVE_CREDENTIALS_DATA: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
 
 
 
