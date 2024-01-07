@@ -1,7 +1,7 @@
 # data
 outputs/
-data/
-models/
+./data/
+./models/
 reports/
 
 docs/site/
