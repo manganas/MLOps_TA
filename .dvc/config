@@ -1,6 +1,10 @@
 [core]
-    remote = remote_storage
+    remote = myremote
 ['remote "storage"']
     url = gdrive://1BY-semk-yc-wkqbp_IaWNn8BvDzlrhoR
 ['remote "remote_storage"']
+    url = gs://mlops-ta-mnist/
+['remote "gcs"']
+    url = gs://mlops-ta-mnist/
+['remote "myremote"']
     url = gs://mlops-ta-mnist/
