@@ -11,7 +11,7 @@ RUN apt update && \
 COPY requirements_docker.txt requirements.txt
 COPY pyproject.toml pyproject.toml
 COPY mnist/ mnist/
-COPY ./workflows/data.dvc data.dvc
+COPY ./data/ data/
 
 
 

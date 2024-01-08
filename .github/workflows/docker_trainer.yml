@@ -1,4 +1,4 @@
-name: "Run tests cached"
+name: "Build docker trainer"
 
 on:
   push:
