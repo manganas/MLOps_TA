@@ -1,0 +1,28 @@
+export IMAGE_FAMILY="pytorch-latest-gpu"
+export ZONE="us-west1-b"
+export INSTANCE_NAME="my-instance"
+
+gcloud compute instances create $INSTANCE_NAME \
+  --zone=$ZONE \
+  --image-family=$IMAGE_FAMILY \
+  --image-project=deeplearning-platform-release \
+  --maintenance-policy=TERMINATE \
+  --accelerator="type=nvidia-tesla-v100,count=1" \
+  --metadata="install-nvidia-driver=True"
+
+####
+--image-family must be either pytorch-latest-gpu or pytorch-VERSION-CUDA-VERSION (for example, pytorch-1-10-cu110).
+
+
+
+####
+
+gcloud compute images list \
+      --project deeplearning-platform-release \
+      --no-standard-images | grep -i pytorch
+
+
+gcloud compute instances create gpu-inst \
+    --zone="europe-west1-b" \
+    --image-family=pytorch-latest-gpu-debian-11-py310 \
+    --image-project=deeplearning-platform-release
