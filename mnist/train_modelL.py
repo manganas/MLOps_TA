@@ -18,20 +18,14 @@ def main(cfg: DictConfig) -> None:
     num_classes = cfg.experiment.num_classes
     n_epochs = cfg.experiment.num_epochs
 
-    dm = CorruptMnistLightningModule(
-        "data/processed", batch_size=cfg.experiment.batch_size
-    )
+    dm = CorruptMnistLightningModule("data/processed", batch_size=cfg.experiment.batch_size)
 
     model = SimpleCNN(img_size=img_size, out_features=num_classes)
 
     # Callbacks
-    checkpoint_callback = ModelCheckpoint(
-        dirpath="./models", monitor="val_loss", mode="min"
-    )
+    checkpoint_callback = ModelCheckpoint(dirpath="./models", monitor="", mode="min")
 
-    early_stopping_callback = EarlyStopping(
-        monitor="val_loss", patience=3, verbose=True, mode="min"
-    )
+    early_stopping_callback = EarlyStopping(monitor="val_loss", patience=3, verbose=True, mode="min")
 
     callbacks = [checkpoint_callback, early_stopping_callback]
 

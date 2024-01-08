@@ -54,6 +54,11 @@ class SimpleCNN(torch.nn.Module):
             Output tensor with shape [N,out_features]
 
         """
+        if x.ndim != 4:
+            raise ValueError("Expected input to be a 4D tensor")
+
         x = self.cnn_net(x)
         logits = self.classifier(x)
+        if logits.shape[-1] != 10:
+            raise ValueError(f"Expected output shape of [N,10]")
         return logits
