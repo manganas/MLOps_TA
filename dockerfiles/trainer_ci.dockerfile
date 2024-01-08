@@ -11,7 +11,7 @@ RUN apt update && \
 COPY requirements_docker.txt requirements.txt
 COPY pyproject.toml pyproject.toml
 COPY mnist/ mnist/
-COPY data.dvc data.dvc
+COPY ./workflows/data.dvc data.dvc
 
 
 
@@ -23,7 +23,6 @@ RUN pip install -r requirements.txt --no-cache-dir
 
 RUN pip install -e .
 
-RUN
 
 
 ENTRYPOINT ["python", "-u", "mnist/train_modelL.py"]
