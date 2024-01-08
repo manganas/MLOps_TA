@@ -49,7 +49,7 @@ jobs:
     - name: Get data
       run: dvc pull
       env:
-          GDRIVE_CREDENTIALS_DATA: ${{ secrets.GCP_CREDENTIALS_DATA }}
+          GDRIVE_CREDENTIALS_DATA: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
 
 
 
