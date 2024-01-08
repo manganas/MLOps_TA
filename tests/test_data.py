@@ -8,10 +8,10 @@ import os
 @pytest.fixture
 def get_datasets():
     train_dataset = CorruptMnist(
-        True, in_folder="data/raw", out_folder="data/processed"
+        True, in_folder=f"{_PATH_DATA}/raw", out_folder=f"{_PATH_DATA}/processed"
     )
     test_dataset = CorruptMnist(
-        False, in_folder="data/raw", out_folder="data/processed"
+        False, in_folder=f"{_PATH_DATA}/raw", out_folder=f"{_PATH_DATA}/processed"
     )
 
     return train_dataset, test_dataset
