@@ -1,4 +1,5 @@
 # data
+model_store/
 outputs/
 ./data/
 ./models/
