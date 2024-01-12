@@ -34,6 +34,7 @@ def main(config: DictConfig) -> None:
     in_folder = data_folder / "raw"
     out_folder = data_folder / "processed"
 
+
     save_model_path = config.model_path
     Path(save_model_path).mkdir(parents=True, exist_ok=True)
 
@@ -72,6 +73,7 @@ def main(config: DictConfig) -> None:
 
     # Training loop
     for epoch in range(epochs):
+
         # Training
         model.train()
         train_loss = 0
