@@ -1,6 +1,11 @@
 outs:
-- md5: fbc073dd594955dbdffde84cfdba0f44.dir
-  size: 53905
-  nfiles: 1
-  hash: md5
+- hash: md5
   path: reports
+  files:
+  - relpath: figures/tsne.png
+    md5: 503316080266149e783a1b1f0a175fdd
+    size: 53905
+    cloud:
+      remote_storage:
+        etag: 08fbd8e1e9b8d883031001
+        version_id: '1705082910960763'

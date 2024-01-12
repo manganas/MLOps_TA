@@ -1,6 +1,18 @@
 outs:
-- md5: d321be2c27cf331cb80c697986f533aa.dir
-  size: 25813108
-  nfiles: 2
-  hash: md5
+- hash: md5
   path: models
+  files:
+  - relpath: epoch=2-step=3375.ckpt
+    md5: d510a164821a51b26409e51a7411abc3
+    size: 19360792
+    cloud:
+      remote_storage:
+        etag: 08d5868febb8d883031001
+        version_id: '1705082913801045'
+  - relpath: model.pt
+    md5: 1b51e7699a1ff79d37b0d9200eb1b400
+    size: 6452316
+    cloud:
+      remote_storage:
+        etag: 0890adf4e8b8d883031001
+        version_id: '1705082909169296'

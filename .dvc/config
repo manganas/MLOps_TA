@@ -4,3 +4,4 @@
     url = gdrive://1BY-semk-yc-wkqbp_IaWNn8BvDzlrhoR
 ['remote "remote_storage"']
     url = gs://mlops-ta-mnist/
+    version_aware = true
