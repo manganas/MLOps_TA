@@ -1,4 +1,6 @@
+
 # data
+.env/
 model_store/
 outputs/
 ./data/

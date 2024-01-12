@@ -11,13 +11,17 @@ RUN apt update && \
 COPY requirements.txt requirements.txt
 COPY pyproject.toml pyproject.toml
 COPY mnist/ mnist/
-COPY data/ data/
-
+COPY data.dvc data.dvc
 
 WORKDIR /
 
 RUN pip install -r requirements.txt --no-cache-dir
 
 RUN pip install -e .
+
+RUN dvc remote modify --local myremote \
+                    credentialpath './env/mlops-ta-f65617f98588.json'
+
+RUN dvc pull
 
 ENTRYPOINT ["python", "-u", "mnist/train_model.py"]
