@@ -21,6 +21,5 @@ RUN pip install torch torchvision --index-url https://download.pytorch.org/whl/c
 
 RUN pip install -e .
 
-RUN dvc pull
 
 ENTRYPOINT ["python", "-u", "mnist/train_model.py"]
