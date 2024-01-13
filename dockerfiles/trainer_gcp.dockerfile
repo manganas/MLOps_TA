@@ -15,9 +15,7 @@ COPY data/ data/
 
 WORKDIR /
 
-RUN pip install -r requirements_docker.txt --no-cache-dir
-
-RUN pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
+RUN pip install -r requirements.txt --no-cache-dir
 
 RUN pip install -e .
 
