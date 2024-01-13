@@ -1,0 +1,6 @@
+gcloud kms encrypt \
+--plaintext-file=.env/mlops-ta-f65617f98588.json \
+--ciphertext-file=.env.enc \
+--location=global \
+--keyring=mlops-ta-keyring \
+--key=cloudbuild-env2

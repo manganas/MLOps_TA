@@ -1,4 +1,14 @@
 steps:
+- name: gcr.io/cloud-builders/gcloud
+  args:
+    - kms
+    - decrypt
+    - --ciphertext-file=.env.enc
+    - --plaintext=./env/mlops-ta-f65617f98588.json
+    - --location=gloabl
+    - --keyring=mlops-ta-keyring
+    - --key=cloudbuild-env2
+
 - name: 'gcr.io/cloud-builders/docker'
   args: ['build', '-t', 'gcr.io/mlops-ta/testing', '-f', 'dockerfiles/trainer_gcp.dockerfile' , '.']
 - name: 'gcr.io/cloud-builders/docker'
