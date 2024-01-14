@@ -26,7 +26,13 @@ from evidently.metric_preset import (
     TargetDriftPreset,
 )
 
+from prometheus_fastapi_instrumentator import Instrumentator
+from prometheus_client import make_asgi_app
+
 app = FastAPI()
+
+metrics_app = make_asgi_app()
+app.mount("/metrics", metrics_app)
 
 # Constants
 model_filename = "model.pkl"
@@ -130,3 +136,6 @@ async def monitor_drift(username: str, password: str):
     return HTMLResponse(content=html_content, status_code=200)
 
     # inst of saving, return html response(s)
+
+
+Instrumentator().instrument(app).expose(app)
