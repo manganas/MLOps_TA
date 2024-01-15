@@ -2,17 +2,17 @@ import pandas as pd
 from sklearn import datasets
 from pathlib import Path
 
-from evidently.report import Report
+# from evidently.report import Report
 
-from evidently.test_suite import TestSuite
-from evidently.tests import TestNumberOfMissingValues
+# from evidently.test_suite import TestSuite
+# from evidently.tests import TestNumberOfMissingValues
 
 
-from evidently.metric_preset import (
-    DataDriftPreset,
-    DataQualityPreset,
-    TargetDriftPreset,
-)
+# from evidently.metric_preset import (
+#     DataDriftPreset,
+#     DataQualityPreset,
+#     TargetDriftPreset,
+# )
 
 
 database_filename = Path.cwd() / "monitoring" / "app" / "database.csv"
@@ -38,8 +38,19 @@ cols = [
     "petal width (cm)",
 ]
 current_data_df = current_data.iloc[:, [1, 2, 3, 4]]
+print(current_data_df.columns)
 # Standardize the dataframes such that they have the same column names
 current_data_df.columns = cols
+
+print(current_data_df.columns)
+
+# print(current_data_df.columns[-2:], type(current_data_df.columns[-2:]))
+
+
+
+print(type(current_data_df.columns))
+
+exit()
 
 # print(current_data_df)
 
